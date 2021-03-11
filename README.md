@@ -5,8 +5,12 @@
 ## Features
 - 시간표 알림 기능
 
-## Config
-`.onlineclassbot.toml` 파일을 onlineclassbot을 실행시키는 위치에서 찾습니다. 
+## How to Use
+```sh
+go run main.go
+```
+### 설정파일
+`.onlineclassbot.toml` 파일을 통해서 봇을 설정 할 수 있습니다.
 ```toml
 [schedules] # 시간표
   [schedules."35 8 * * 1-5"]
