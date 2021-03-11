@@ -49,6 +49,8 @@ func (s *Schedule) Register(session *discordgo.Session) {
 					Color:     0xc5e1a5,
 				}
 
+				session.UpdateListeningStatus(schedule.Teacher)
+
 				if _, err := session.ChannelMessageSendEmbed(s.config.Bot.NotifyID, &embed); err != nil {
 					logger.Log().Errorw("Failed to send a notify schedules message", "err", err)
 				}
