@@ -10,7 +10,13 @@ import (
 // Config is the onlineclassbot's base config structure
 type Config struct {
 	// Schedules is online class calendar, key is a cron expression, value is the response
-	Schedules map[string]string
+	Schedules map[string]string `mapstructure:"schedules"`
+	Bot       BotConfig         `mapstructure:"bot"`
+}
+
+// BotConfig is the element of Config structure
+type BotConfig struct {
+	Token string `mapstructure:"token"`
 }
 
 // ReadInConfig loads configuration and returns unmashaled instances
@@ -26,6 +32,9 @@ func ReadInConfig() *Config {
 
 	v.AddConfigPath(".")
 	v.SetDefault("schedules", map[string]string{})
+	v.SetDefault("bot", BotConfig{
+		Token: "",
+	})
 
 	if err := v.ReadInConfig(); err != nil {
 		switch err.(type) {
