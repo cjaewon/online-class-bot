@@ -1,8 +1,9 @@
 package config
 
 import (
-	"onlineclassbot/internal/logger"
 	"runtime"
+
+	"onlineclassbot/internal/logger"
 
 	"github.com/spf13/viper"
 )
@@ -10,13 +11,20 @@ import (
 // Config is the onlineclassbot's base config structure
 type Config struct {
 	// Schedules is online class calendar, key is a cron expression, value is the response
-	Schedules map[string]string `mapstructure:"schedules"`
-	Bot       BotConfig         `mapstructure:"bot"`
+	Schedules map[string]ScheduleConfig `mapstructure:"schedules"`
+	Bot       BotConfig                 `mapstructure:"bot"`
 }
 
 // BotConfig is the element of Config structure
 type BotConfig struct {
-	Token string `mapstructure:"token"`
+	Token    string `mapstructure:"token"`
+	NotifyID string `mapstructure:"notify_id"`
+}
+
+// ScheduleConfig is the element of Config structure
+type ScheduleConfig struct {
+	Teacher string `mapstructure:"teacher"`
+	URL     string `mapstructure:"url"`
 }
 
 // ReadInConfig loads configuration and returns unmashaled instances
@@ -33,7 +41,8 @@ func ReadInConfig() *Config {
 	v.AddConfigPath(".")
 	v.SetDefault("schedules", map[string]string{})
 	v.SetDefault("bot", BotConfig{
-		Token: "",
+		Token:    "",
+		NotifyID: "",
 	})
 
 	if err := v.ReadInConfig(); err != nil {

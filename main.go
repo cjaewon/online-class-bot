@@ -1,22 +1,34 @@
 package main
 
 import (
-	"onlineclassbot/internal/config"
-	"onlineclassbot/internal/logger"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"onlineclassbot/internal/config"
+	"onlineclassbot/internal/logger"
+	"onlineclassbot/internal/schedule"
 
 	"github.com/bwmarrin/discordgo"
 )
 
 func main() {
+	defer logger.Log().Sync()
+
 	cfg := config.ReadInConfig()
+	scheduler := schedule.New(cfg)
+
 	discord, err := discordgo.New("Bot " + cfg.Bot.Token)
 
 	if err != nil {
 		logger.Log().Fatalw("Failed to create bot client", "err", err)
 	}
+
+	discord.AddHandlerOnce(func(s *discordgo.Session, r *discordgo.Ready) {
+		scheduler.Register(s)
+		scheduler.Start()
+	})
+
 	if err := discord.Open(); err != nil {
 		logger.Log().Fatal("Failed to Open connecting", "err", err)
 	}
