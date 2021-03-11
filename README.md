@@ -1,5 +1,6 @@
 # onlineclassbot
 🏡 온라인 클래스용 봇
+
 ![커버 사진](https://raw.githubusercontent.com/cjaewon/onlineclassbot/main/media/cover.png)
 
 ## Features
